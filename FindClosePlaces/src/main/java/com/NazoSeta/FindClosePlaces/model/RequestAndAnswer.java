@@ -14,9 +14,9 @@ public class RequestAndAnswer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String Longitude;
-    private String Latitude;
-    private String Radius;
+    private Long id;
+    private Double Longitude;
+    private Double Latitude;
+    private Double Radius;
 
 }
