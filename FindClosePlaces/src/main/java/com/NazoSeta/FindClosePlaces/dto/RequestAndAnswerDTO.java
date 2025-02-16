@@ -6,8 +6,8 @@ import lombok.Data;
 public class RequestAndAnswerDTO {
 
     private Long id;
-    private Double Longitude;
-    private Double Latitude;
-    private Double Radius;
+    private String longitude;
+    private String latitude;
+    private String radius;
 
 }
