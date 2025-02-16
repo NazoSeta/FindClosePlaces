@@ -18,9 +18,12 @@ public class RequestAndAnswerService {
 
     public RequestAndAnswerDTO addLocation(RequestAndAnswer requestAndAnswer) {
 
-        requestAndAnswerRepository.save(requestAndAnswer);
         ModelMapper modelMapper = new ModelMapper();
         RequestAndAnswerDTO requestAndAnswerDTO = modelMapper.map(requestAndAnswer, RequestAndAnswerDTO.class);
+
+        if(!(requestAndAnswerRepository.existsByCoordinatesAndRadius(requestAndAnswer.getLongitude(), requestAndAnswer.getLatitude(), requestAndAnswer.getRadius()))) {
+            requestAndAnswerRepository.save(requestAndAnswer);
+        }
 
         return requestAndAnswerDTO;
     }
