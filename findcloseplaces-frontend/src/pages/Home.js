@@ -7,10 +7,11 @@ export default function Home() {
         longitude: "",
         latitude: "",
         radius: "",
-        theJSON: "",
     });
 
-    const { longitude, latitude, radius, theJSON } = info;
+    const { longitude, latitude, radius } = info;
+
+    const [response, setResponse] = useState(null);
 
     const onInputChange = (e) => {
         setInfo({ ...info, [e.target.name]: e.target.value })
@@ -19,7 +20,7 @@ export default function Home() {
     const onSubmit = async (e) => {
         e.preventDefault();
         const result = await axios.post(`http://localhost:8080/addlocation`, info);
-        return setInfo(result.data);
+        setResponse(result.data);
     };
 
     return (
@@ -77,7 +78,7 @@ export default function Home() {
                 </div>
             </div>
             <div>
-                {info.theJSON}
+                {response.theJSON}
             </div>
         </div>
     )
