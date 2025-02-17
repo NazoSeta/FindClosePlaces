@@ -1,9 +1,6 @@
 package com.NazoSeta.FindClosePlaces.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,5 +15,7 @@ public class RequestAndAnswer {
     private String longitude;
     private String latitude;
     private String radius;
+    @Column(name = "thejson", columnDefinition = "LONGTEXT")
+    private String theJSON;
 
 }

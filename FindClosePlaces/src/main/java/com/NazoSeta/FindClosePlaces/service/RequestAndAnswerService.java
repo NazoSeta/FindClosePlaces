@@ -5,7 +5,9 @@ import com.NazoSeta.FindClosePlaces.model.RequestAndAnswer;
 import com.NazoSeta.FindClosePlaces.repository.RequestAndAnswerRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,14 +18,32 @@ public class RequestAndAnswerService {
 
     private final RequestAndAnswerRepository requestAndAnswerRepository;
 
+    @Value("${google.places.api.key}")
+    private String apiKey;
+
+    private final String GOOGLE_PLACES_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
+
+    public String getNearbyPlaces(String longitude, String latitude, String radius){
+        String url = GOOGLE_PLACES_URL +
+                "?location=" + latitude + "," + longitude +
+                "&radius=" + radius +
+                "&key=" + apiKey;
+
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.getForObject(url, String.class);
+    }
+
     public RequestAndAnswerDTO addLocation(RequestAndAnswer requestAndAnswer) {
+
+        if(!(requestAndAnswerRepository.existsByCoordinatesAndRadius(requestAndAnswer.getLongitude(), requestAndAnswer.getLatitude(), requestAndAnswer.getRadius()))) {
+            requestAndAnswer.setTheJSON(getNearbyPlaces(requestAndAnswer.getLongitude(), requestAndAnswer.getLatitude(), requestAndAnswer.getRadius()));
+            requestAndAnswerRepository.save(requestAndAnswer);
+        }
 
         ModelMapper modelMapper = new ModelMapper();
         RequestAndAnswerDTO requestAndAnswerDTO = modelMapper.map(requestAndAnswer, RequestAndAnswerDTO.class);
 
-        if(!(requestAndAnswerRepository.existsByCoordinatesAndRadius(requestAndAnswer.getLongitude(), requestAndAnswer.getLatitude(), requestAndAnswer.getRadius()))) {
-            requestAndAnswerRepository.save(requestAndAnswer);
-        }
+        System.out.println(getNearbyPlaces(requestAndAnswer.getLongitude(), requestAndAnswer.getLatitude(), requestAndAnswer.getRadius()));
 
         return requestAndAnswerDTO;
     }

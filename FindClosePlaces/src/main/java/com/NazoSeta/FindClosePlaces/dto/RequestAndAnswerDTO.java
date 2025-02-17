@@ -9,5 +9,6 @@ public class RequestAndAnswerDTO {
     private String longitude;
     private String latitude;
     private String radius;
+    private String theJSON;
 
 }

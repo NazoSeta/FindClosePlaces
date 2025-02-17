@@ -7,9 +7,10 @@ export default function Home() {
         longitude: "",
         latitude: "",
         radius: "",
+        theJSON:"",
     });
 
-    const { longitude, latitude, radius } = info;
+    const { longitude, latitude, radius, theJSON } = info;
 
     const onInputChange = (e) => {
         setInfo({ ...info, [e.target.name]: e.target.value })
