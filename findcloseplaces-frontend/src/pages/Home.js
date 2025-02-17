@@ -7,7 +7,7 @@ export default function Home() {
         longitude: "",
         latitude: "",
         radius: "",
-        theJSON:"",
+        theJSON: "",
     });
 
     const { longitude, latitude, radius, theJSON } = info;
@@ -18,7 +18,8 @@ export default function Home() {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        await axios.post(`http://localhost:8080/addlocation`, info);
+        const result = await axios.post(`http://localhost:8080/addlocation`, info);
+        return setInfo(result.data);
     };
 
     return (
@@ -76,7 +77,7 @@ export default function Home() {
                 </div>
             </div>
             <div>
-                output
+                {info.theJSON}
             </div>
         </div>
     )

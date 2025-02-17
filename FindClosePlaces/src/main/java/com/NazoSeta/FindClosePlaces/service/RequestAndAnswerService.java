@@ -39,6 +39,9 @@ public class RequestAndAnswerService {
             requestAndAnswer.setTheJSON(getNearbyPlaces(requestAndAnswer.getLongitude(), requestAndAnswer.getLatitude(), requestAndAnswer.getRadius()));
             requestAndAnswerRepository.save(requestAndAnswer);
         }
+        else {
+            requestAndAnswer = requestAndAnswerRepository.findJSON(requestAndAnswer.getLongitude(), requestAndAnswer.getLatitude(), requestAndAnswer.getRadius());
+        }
 
         ModelMapper modelMapper = new ModelMapper();
         RequestAndAnswerDTO requestAndAnswerDTO = modelMapper.map(requestAndAnswer, RequestAndAnswerDTO.class);

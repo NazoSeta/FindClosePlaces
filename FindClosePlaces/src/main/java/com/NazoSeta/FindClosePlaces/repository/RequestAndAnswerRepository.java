@@ -11,4 +11,7 @@ public interface RequestAndAnswerRepository extends JpaRepository<RequestAndAnsw
     @Query("SELECT COUNT(r) > 0 FROM RequestAndAnswer r WHERE r.longitude = :longitude AND r.latitude = :latitude AND r.radius = :radius")
     boolean existsByCoordinatesAndRadius(String longitude, String latitude, String radius);
 
+    @Query("SELECT r FROM RequestAndAnswer r WHERE r.longitude = :longitude AND r.latitude = :latitude AND r.radius = :radius")
+    RequestAndAnswer findJSON(String longitude, String latitude, String radius);
+
 }
