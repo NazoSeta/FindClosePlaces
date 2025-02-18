@@ -1,7 +1,12 @@
+"use client";
+
 import React, { useState } from 'react';
 import axios from 'axios';
+import { APIProvider, Map, AdvancedMarker, Pin, InfoWindow } from "@vis.gl/react-google-maps"
 
 export default function Home() {
+
+    const position = { lat: 53.54, lng: 10 };
 
     const [info, setInfo] = useState({
         longitude: "",
@@ -25,9 +30,9 @@ export default function Home() {
 
     return (
         <div style={{ display: 'flex' }}>
-            <div className="container">
+            <div className="container" style={{ maxWidth: "30%" }}>
                 <div className='row' style={{ paddingTop: "20px" }}>
-                    <div className='col-md-6 offset-md-3 border rounded p-4 mt-2 shadow' style={{ marginLeft: "20px" }}>
+                    <div className='col-md-10 offset-md-3 border rounded p-4 mt-2 shadow' style={{ marginLeft: "20px" }}>
                         <h2 className='text-center m-4'>Search Nearby Locations</h2>
                         <form onSubmit={(e) => onSubmit(e)}>
                             <div className='mb-2'>
@@ -77,9 +82,15 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-            <div>
-                {response.theJSON}
-            </div>
+            <APIProvider apiKey={process.env.REACT_APP_GOOGLE_PLACES_API_KEY}>
+                <div style={{ height: "80vh", width: "100%" }}>
+                    <Map zoom={9} center={position} mapId={process.env.REACT_APP_GOOGLE_PLACES_MAP_ID}>
+                        <AdvancedMarker position={position}>
+
+                        </AdvancedMarker>
+                    </Map>
+                </div>
+            </APIProvider>
         </div>
     )
 }
