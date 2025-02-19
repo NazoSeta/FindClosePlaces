@@ -1,12 +1,10 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { APIProvider, Map, AdvancedMarker, Pin, InfoWindow } from "@vis.gl/react-google-maps"
 
 export default function Home() {
-
-    const position = { lat: 53.54, lng: 10 };
 
     const [info, setInfo] = useState({
         longitude: "",
@@ -18,6 +16,18 @@ export default function Home() {
 
     const [response, setResponse] = useState(null);
 
+    const [mapCenter, setMapCenter] = useState({ lat: 53.54, lng: 10 });
+    const [mapZoom, setMapZoom] = useState(9);
+
+    useEffect(() => {
+        if (longitude && latitude) {
+            setMapCenter({
+                lat: parseFloat(latitude),
+                lng: parseFloat(longitude)
+            });
+        }
+    }, [longitude, latitude]);
+
     const onInputChange = (e) => {
         setInfo({ ...info, [e.target.name]: e.target.value })
     };
@@ -27,6 +37,23 @@ export default function Home() {
         const result = await axios.post(`http://localhost:8080/addlocation`, info);
         setResponse(result.data);
     };
+
+    function placeMarkers() {
+
+        if (response != null) {
+            let parsedData = JSON.parse(response.theJSON);
+
+            if (parsedData.results != null) {
+                const locations = parsedData.results.map(place => ({
+                    lat: place.geometry.location.lat,
+                    lng: place.geometry.location.lng
+                }));
+                console.log("test");
+                return locations;
+            }
+        }
+        return [];
+    }
 
     return (
         <div style={{ display: 'flex' }}>
@@ -84,13 +111,21 @@ export default function Home() {
             </div>
             <APIProvider apiKey={process.env.REACT_APP_GOOGLE_PLACES_API_KEY}>
                 <div style={{ height: "80vh", width: "100%" }}>
-                    <Map zoom={9} center={position} mapId={process.env.REACT_APP_GOOGLE_PLACES_MAP_ID}>
-                        <AdvancedMarker position={position}>
-
-                        </AdvancedMarker>
+                    <Map zoom={mapZoom} center={mapCenter} mapId={process.env.REACT_APP_GOOGLE_PLACES_MAP_ID}
+                        onCameraChanged={(event) => {
+                            setMapCenter(event.detail.center)
+                            setMapZoom(event.detail.zoom)
+                        }}>
+                        {placeMarkers().map((markers, index) => (
+                            <AdvancedMarker key={index} position={markers}>
+                                <Pin />
+                            </AdvancedMarker>
+                        ))}
                     </Map>
                 </div>
             </APIProvider>
         </div>
     )
 }
+
+
