@@ -34,7 +34,7 @@ export default function Home() {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        const result = await axios.post(`http://localhost:8080/addlocation`, info);
+        const result = await axios.post(`http://localhost:8070/addlocation`, info);
         setResponse(result.data);
     };
 
@@ -48,7 +48,6 @@ export default function Home() {
                     lat: place.geometry.location.lat,
                     lng: place.geometry.location.lng
                 }));
-                console.log("test");
                 return locations;
             }
         }

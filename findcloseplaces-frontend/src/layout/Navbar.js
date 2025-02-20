@@ -5,7 +5,7 @@ export default function Navbar() {
         <div>
             <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
                 <div className="container-fluid">
-                    <a className="navbar-brand" href="#">Find Nearby Locations</a>
+                    <a className="navbar-brand" href="#">Find Nearby Locations - Case Study Codexist</a>
                 </div>
             </nav>
         </div>

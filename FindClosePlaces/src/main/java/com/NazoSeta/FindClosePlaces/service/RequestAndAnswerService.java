@@ -46,8 +46,6 @@ public class RequestAndAnswerService {
         ModelMapper modelMapper = new ModelMapper();
         RequestAndAnswerDTO requestAndAnswerDTO = modelMapper.map(requestAndAnswer, RequestAndAnswerDTO.class);
 
-        System.out.println(getNearbyPlaces(requestAndAnswer.getLongitude(), requestAndAnswer.getLatitude(), requestAndAnswer.getRadius()));
-
         return requestAndAnswerDTO;
     }
 
